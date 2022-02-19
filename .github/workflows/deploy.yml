@@ -44,4 +44,16 @@ jobs:
         aws s3 cp \
         --region ap-northeast-2 \
         --acl private \
-        ./funin-todo-build.zip s3://funin-todo-deploy/
+        ./funin-todo-build.zip s3://funin-todo-deploy/        
+
+    - name: Deploy
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: |
+        aws deploy create-deployment \
+        --application-name funin-todo \
+        --deployment-group-name funin-todo-group \
+        --file-exists-behavior OVERWRITE \
+        --s3-location bucket=funin-todo-deploy,bundleType=zip,key=funin-todo-build.zip \
+        --region ap-northeast-2
