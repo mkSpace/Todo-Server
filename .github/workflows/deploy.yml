@@ -1,0 +1,47 @@
+name: Spring Boot CI with Gradle
+
+on:
+  push:
+    branches: 
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkouk
+      uses: actions/checkout@v2
+    
+    - name: Set up JDK 11
+      uses: actions/setup-java@v1.4.3
+      with:
+        java-version: 1.11
+    
+    - name: Grant execute permission for gradlew
+      run: chmod +x ./gradlew
+      shell: bash
+    
+    - name: Build with Gradle
+      run: ./gradlew clean build
+      shell: bash
+      
+    - name: Make Directory for deliver
+      run: mkdir deploy
+      
+    - name: Copy Jar
+      run: cp ./build/libs/*.jar ./deploy/
+      
+    - name: Make zip file
+      run: zip -r -qq -j ./funin-todo-build.zip ./deploy
+      
+    - name: Deliver to AWS S3
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: |
+        aws s3 cp \
+        --region ap-northeast-2 \
+        --acl private \
+        ./funin-todo-build.zip s3://funin-todo-build/
