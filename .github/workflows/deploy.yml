@@ -44,4 +44,4 @@ jobs:
         aws s3 cp \
         --region ap-northeast-2 \
         --acl private \
-        ./funin-todo-build.zip s3://funin-todo-build/
+        ./funin-todo-build.zip s3://funin-todo-deploy/
