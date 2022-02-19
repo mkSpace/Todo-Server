@@ -29,12 +29,12 @@ jobs:
       
     - name: Make Directory for deliver
       run: mkdir deploy
+
+    - name: Make Jar
+      run: zip -r funin-todo-build *
       
     - name: Copy Jar
-      run: cp ./build/libs/*.jar ./deploy/
-      
-    - name: Make zip file
-      run: zip -r -qq -j ./funin-todo-build.zip ./deploy
+      run: cp funin-todo-build.zip ./deploy/
       
     - name: Deliver to AWS S3
       env:
