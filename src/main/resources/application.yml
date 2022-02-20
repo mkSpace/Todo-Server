@@ -12,3 +12,26 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create-drop
+
+---
+spring:
+  config:
+    activate:
+      on-profile: set1-server
+server:
+  port: 8081
+
+---
+spring:
+  config:
+    activate:
+      on-profile: set2-server
+server:
+  port: 8082
+
+---
+spring:
+  profiles:
+    group:
+      set1: set1-server, real-db
+      set2: set2-server, real-db
