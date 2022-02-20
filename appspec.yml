@@ -2,9 +2,9 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ec2-user/workspace/app/github/build/
+    destination: /home/ec2-user/workspace/app/nonstop/funin-todo/
 
 hooks:
   AfterInstall:
     - location: execute-deploy.sh
-      timeout: 360
+      timeout: 180
