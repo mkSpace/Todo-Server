@@ -12,36 +12,3 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create-drop
-
-# 운영 환경
----
-spring:
-  config:
-    activate:
-      on-profile: set1
-  profiles:
-    include: real-db
-server:
-  port: 8081
-
----
-spring:
-  config:
-    activate:
-      on-profile: set2
-  profiles:
-    include: real-db
-
-server:
-  port: 8082
-
----
-spring:
-  config:
-    activate:
-      on-profile: real-db
-  datasource:
-    url: jdbc:mariadb://funintodo.cflxwed2t8j3.ap-northeast-2.rds.amazonaws.com:3306/funintodo
-    username: funin
-    password: qwwoals1212
-    driver-class-name: org.mariadb.jdbc.Driver

@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.funin"
-version = "0.0.1.7"
+version = "0.0.1.8"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
@@ -19,6 +19,7 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.mariadb.jdbc:mariadb-java-client")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
