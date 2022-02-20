@@ -2,3 +2,5 @@
 spring:
   profiles:
     active: local
+  jpa:
+    show-sql: true
