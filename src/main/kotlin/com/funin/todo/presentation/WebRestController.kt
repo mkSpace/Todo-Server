@@ -1,7 +1,7 @@
-package com.funin.todo.controller
+package com.funin.todo.presentation
 
-import com.funin.todo.entity.User
-import com.funin.todo.repository.UserRepository
+import com.funin.todo.domain.user.User
+import com.funin.todo.domain.user.UserRepository
 import org.springframework.core.env.Environment
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
