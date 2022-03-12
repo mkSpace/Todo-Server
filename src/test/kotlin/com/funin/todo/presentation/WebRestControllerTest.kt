@@ -15,6 +15,6 @@ internal class WebRestControllerTest {
     @Test
     fun check_profile() {
         val profile = restTemplate.getForObject("/profile", String::class.java)
-        Assertions.assertThat(profile).isEqualTo("local")
+        Assertions.assertThat(profile).isEqualTo("test")
     }
 }
