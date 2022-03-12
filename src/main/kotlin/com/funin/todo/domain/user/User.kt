@@ -4,7 +4,7 @@ import com.funin.todo.domain.BaseTimeEntity
 import javax.persistence.*
 
 @Entity
-class User : BaseTimeEntity(){
+class User : BaseTimeEntity() {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,4 +15,7 @@ class User : BaseTimeEntity(){
 
     @Column(nullable = false)
     var password: String? = null
+
+    @Column(nullable = false)
+    var salt: ByteArray? = null
 }
