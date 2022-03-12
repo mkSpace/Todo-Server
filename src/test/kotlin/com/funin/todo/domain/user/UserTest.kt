@@ -1,5 +1,6 @@
 package com.funin.todo.domain.user
 
+import com.funin.todo.presentation.utils.CipherManager
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,15 +14,26 @@ internal class UserTest {
     @Autowired
     lateinit var entityManager: EntityManager
 
-    @Transactional
+    @Autowired
+    lateinit var cipherManager: CipherManager
+
     @Test
-    fun test() {
+    @Transactional
+    fun save() {
         val user = User()
-        user.nickname = "Jaemin"
+        user.nickname = "funin-todo"
+        val salt = cipherManager.generateSalt()
+        val password = "test-password"
+        user.password = cipherManager.encodeSHA256(password, salt)
+        user.salt = salt
         entityManager.persist(user)
 
-        val findUser = entityManager.createQuery("select user from User user where user.nickname=:username", User::class.java)
-            .setParameter("username", "Jaemin")
+        val findUser = entityManager
+            .createQuery(
+                "select user from User user where user.nickname=:username",
+                User::class.java
+            )
+            .setParameter("username", "funin-todo")
             .singleResult
 
         Assertions.assertThat(user).isEqualTo(findUser)

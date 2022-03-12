@@ -1,15 +1,7 @@
 package com.funin.todo.domain.user
 
-import org.springframework.stereotype.Repository
-import javax.persistence.EntityManager
+import org.springframework.data.jpa.repository.JpaRepository
 
-@Repository
-class UserRepository(private val entityManager: EntityManager) {
-
-    fun save(username: String): User {
-        val user = User()
-        user.nickname = "funin"
-        entityManager.persist(user)
-        return user
-    }
+interface UserRepository : JpaRepository<User, Long> {
+    fun findByNickname(nickname: String): User?
 }
