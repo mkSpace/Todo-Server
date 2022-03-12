@@ -1,4 +1,4 @@
-package com.funin.todo.entity
+package com.funin.todo.domain.user
 
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
