@@ -12,10 +12,9 @@ class UserController(private val userService: UserService) {
 
     @PostMapping("/signup")
     fun signup(@RequestBody @Validated request: SignUpRequest): ApiResponse<SignUpResponse> {
-        val nickname = request.nickname
-            ?: throw IllegalArgumentException("nickname must not be null")
-        val password = request.password ?: throw IllegalArgumentException("password must not be null")
-        val response = userService.join(nickname, password).toSignUnResponse()
+        if (request.nickname.isNullOrBlank()) throw IllegalArgumentException("nickname must not be blank")
+        if (request.password.isNullOrBlank()) throw IllegalArgumentException("password must not be blank")
+        val response = userService.join(request.nickname, request.password).toSignUnResponse()
         return ApiResponse.success(response)
     }
 }
