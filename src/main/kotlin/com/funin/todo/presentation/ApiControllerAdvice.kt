@@ -6,6 +6,7 @@ import com.funin.todo.presentation.api.ApiResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -42,5 +43,12 @@ class ApiControllerAdvice {
     fun handleBusinessException(e: BusinessException): ApiResponse<Unit> {
         log.error("BusinessException", e.cause)
         return ApiResponse.failure(e.resultCode)
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException): ApiResponse<Unit> {
+        log.error("MethodArgumentNotValidException", e)
+        return ApiResponse.failure(ResultCode.BAD_REQUEST)
     }
 }
