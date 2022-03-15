@@ -1,6 +1,8 @@
 # Test
 spring:
   profiles:
-    active: local
+    active: test
   jpa:
     show-sql: true
+    hibernate:
+      ddl-auto: create-drop
