@@ -1,4 +1,4 @@
-package com.funin.todo.utils
+package com.funin.todo.presentation.utils
 
 import org.springframework.stereotype.Component
 import java.security.MessageDigest

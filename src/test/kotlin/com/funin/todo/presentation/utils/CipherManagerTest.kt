@@ -1,4 +1,4 @@
-package com.funin.todo.utils
+package com.funin.todo.presentation.utils
 
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DisplayName
