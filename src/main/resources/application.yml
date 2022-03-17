@@ -43,3 +43,7 @@ spring:
     group:
       set1: set1-server, real-db
       set2: set2-server, real-db
+
+jwt:
+  token-issuer: funin-todo
+  token-signing-key: ENC(9qPSlnnVXsfEyBJYE237aPFWttgLZ9xxq/xWAN7iPfoSYBNCPGHGMgaeMg/kXe5g)
