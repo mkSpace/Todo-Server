@@ -2,11 +2,13 @@ package com.funin.todo.domain.user
 
 import com.funin.todo.domain.exception.UserDuplicatedException
 import com.funin.todo.presentation.utils.CipherManager
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 interface UserService {
-    fun join(nickname: String, password: String): UserVO
+    fun join(nickname: String, password: String): UserVO?
+    fun findById(userId: Long): User?
 }
 
 @Service
@@ -17,7 +19,7 @@ class UserServiceImpl(
 ) : UserService {
 
     @Transactional
-    override fun join(nickname: String, password: String): UserVO {
+    override fun join(nickname: String, password: String): UserVO? {
         val findMember = userRepository.findByNickname(nickname)
         if (findMember != null) {
             throw UserDuplicatedException(nickname)
@@ -30,5 +32,9 @@ class UserServiceImpl(
         }
         userRepository.save(user)
         return user.toUserVO()
+    }
+
+    override fun findById(userId: Long): User? {
+        return userRepository.findByIdOrNull(userId)
     }
 }
