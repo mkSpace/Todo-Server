@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.env.ConfigurableEnvironment
+import java.util.*
 
 @Disabled("필요할 때만 사용합니다")
 @SpringBootTest
@@ -31,7 +32,7 @@ class JasyptConfigTest {
 
     @Test
     fun testForEncryption() {
-        val source = "qwwoals1212"
+        val source = UUID.randomUUID().toString()
         println("source: $source")
         println("encrypted: ${encryptor.encrypt(source)}")
     }
