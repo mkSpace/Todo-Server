@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.funin"
-version = "0.0.1.8"
+version = "0.0.1.9"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
