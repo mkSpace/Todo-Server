@@ -1,5 +1,6 @@
 package com.funin.todo.infrastructure
 
+import com.funin.todo.ActiveTestProfile
 import com.ulisesbocchio.jasyptspringboot.encryptor.DefaultLazyEncryptor
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
@@ -11,6 +12,7 @@ import org.springframework.core.env.ConfigurableEnvironment
 import java.util.*
 
 @Disabled("필요할 때만 사용합니다")
+@ActiveTestProfile
 @SpringBootTest
 class JasyptConfigTest {
 

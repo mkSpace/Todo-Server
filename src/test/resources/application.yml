@@ -1,3 +1,7 @@
+jwt:
+  token-issuer: funin-todo-test
+  token-signing-key: funin-todo-sample-secret-key
+
 # Test
 spring:
   profiles:
@@ -6,7 +10,3 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create-drop
-
-jwt:
-  token-issuer:
-  token-signing-key:
