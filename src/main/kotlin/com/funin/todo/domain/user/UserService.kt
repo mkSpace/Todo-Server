@@ -30,8 +30,7 @@ class UserServiceImpl(
             this.password = cipherManager.encodeSHA256(password, salt)
             this.salt = salt
         }
-        userRepository.save(user)
-        return user.toUserVO()
+        return userRepository.save(user).toUserVO()
     }
 
     override fun findById(userId: Long): User? {

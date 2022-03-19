@@ -3,15 +3,11 @@ package com.funin.todo.presentation.utils
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import java.util.*
 
-@SpringBootTest
 internal class CipherManagerTest {
 
-    @Autowired
-    lateinit var cipherManager: CipherManager
+    private var cipherManager: CipherManager = CipherManager()
 
     @Test
     @DisplayName("generate 된 salt 는 서로 달라야 합니다.")
