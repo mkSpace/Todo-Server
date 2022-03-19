@@ -6,16 +6,32 @@ import com.funin.todo.presentation.api.ApiResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.userdetails.User
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import java.security.Principal
 
 @RestControllerAdvice
 class ApiControllerAdvice {
 
     companion object {
         val log: Logger = LoggerFactory.getLogger(ApiControllerAdvice::class.java)
+    }
+
+    @ModelAttribute("userId")
+    fun resolveUserId(principal: Principal?): Long? {
+        log.debug("principal : {}", principal)
+        if (principal is UsernamePasswordAuthenticationToken) {
+            if (principal.principal is User) {
+                return (principal.principal as? User)?.username?.toLongOrNull()
+            }
+            return principal.principal.toString().toLongOrNull()
+        }
+        return null
     }
 
     /**
