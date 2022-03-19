@@ -1,7 +1,6 @@
 package com.funin.todo.presentation.api.user
 
 import com.funin.todo.domain.user.UserRepository
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -21,18 +20,6 @@ class UserControllerTest {
     @BeforeEach
     fun beforeEach() {
         userRepository.deleteAll()
-    }
-
-    @Test
-    fun 회원가입_성공() {
-        val nickname = "funin-todo"
-        val password = UUID.randomUUID().toString()
-        val request = SignUpRequest(nickname, password)
-
-        userController.signup(request)
-        val findUser = userRepository.findByNickname(nickname)
-
-        assertThat(findUser?.nickname).isEqualTo(nickname)
     }
 
     @Test

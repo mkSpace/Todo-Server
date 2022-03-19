@@ -31,7 +31,7 @@ internal class UserServiceTest {
         val userVO = userService.join(nickname, password)
         val findMember = userRepository.findByNickname(nickname)
 
-        assertThat(userVO.nickname).isEqualTo(findMember?.nickname)
+        assertThat(userVO?.nickname).isEqualTo(findMember?.nickname)
         assertThat(findMember?.password).isNotNull
         assertThat(findMember?.salt).isNotNull
     }
