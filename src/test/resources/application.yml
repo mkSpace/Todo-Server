@@ -1,3 +1,7 @@
+jwt:
+  token-issuer: funin-todo-test
+  token-signing-key: funin-todo-sample-secret-key
+
 # Test
 spring:
   profiles:

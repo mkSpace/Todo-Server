@@ -11,8 +11,11 @@ data class ApiResponse<T>(
 ) {
 
     companion object {
-        fun <T> success(data: T?): ApiResponse<T> =
-            ApiResponse(ResultCode.SUCCESS.name, ResultCode.SUCCESS.message, data)
+        fun <T> success(data: T?): ApiResponse<T> {
+            println("SUCCESS!!")
+            return ApiResponse(ResultCode.SUCCESS.name, ResultCode.SUCCESS.message, data)
+        }
+
 
         fun <T> success(): ApiResponse<T> = success(null)
         fun <T> failure(code: String, message: String): ApiResponse<T> = ApiResponse(code, message, null)
