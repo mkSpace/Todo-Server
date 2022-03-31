@@ -175,6 +175,6 @@ class UserControllerTest {
             .andDo(print())
             .andExpect(status().is5xxServerError)
             .andExpect(jsonPath("\$.code").value(ResultCode.USER_NOT_FOUND.name))
-            .andExpect(jsonPath("\$.message").value(ResultCode.USER_NOT_FOUND.message))
+            .andExpect(jsonPath("\$.message").value("비밀번호가 일치하지 않습니다."))
     }
 }

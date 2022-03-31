@@ -57,8 +57,8 @@ class ApiControllerAdvice {
     @ExceptionHandler(BusinessException::class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     fun handleBusinessException(e: BusinessException): ApiResponse<Unit> {
-        log.error("BusinessException", e.cause)
-        return ApiResponse.failure(e.resultCode)
+        log.error("BusinessException", e)
+        return ApiResponse.failure(e.resultCode, e.message)
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)

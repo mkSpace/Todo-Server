@@ -27,7 +27,7 @@ class UserController(
     @PostMapping("/login")
     fun login(@RequestBody @Validated request: SignInRequest): ApiResponse<SignInResponse> {
         val userVO = userService.login(request.email, request.password)
-            ?: throw UserNotFoundException("${request.email}에 해당하는 사용자를 찾을 수 없습니다.")
+            ?: throw UserNotFoundException("비밀번호가 일치하지 않습니다.")
         return ApiResponse.success(
             data = SignInResponse(jwtService.encode(userVO.id), userVO.nickname)
         )
