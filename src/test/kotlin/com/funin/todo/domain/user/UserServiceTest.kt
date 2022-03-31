@@ -30,11 +30,13 @@ internal class UserServiceTest {
     @Test
     fun join_성공() {
         //given
+        val email = "funin@google.com"
         val nickname = "funin-todo"
         val password = UUID.randomUUID().toString()
         val simpleSalt = cipherManager.generateSalt()
         val simpleUser = User().apply {
             this.id = 1L
+            this.email = email
             this.nickname = nickname
             this.password = password
             this.salt = simpleSalt
@@ -46,7 +48,7 @@ internal class UserServiceTest {
         `when`(userRepository.save(any())).thenReturn(simpleUser)
 
         //when
-        val userVO = userService.join(nickname, password)
+        val userVO = userService.join(email, nickname, password)
 
         //then
         verify(userRepository).save(any())
@@ -57,20 +59,24 @@ internal class UserServiceTest {
     @Test
     fun join_중복시_실패() {
         //given
+        val email = "funin@google.com"
         val nickname = "funin-todo"
         val password = UUID.randomUUID().toString()
         val salt = cipherManager.generateSalt()
         doAnswer {
             User().apply {
+                this.id = 1L
+                this.email = email
                 this.nickname = nickname
                 this.password = cipherManager.encodeSHA256(password, salt)
                 this.salt = salt
+                this.createdAt = LocalDateTime.now()
             }
         }.`when`(userRepository).findByNickname(nickname)
 
         //then
         Assertions.assertThrows(UserDuplicatedException::class.java) {
-            userService.join(nickname, password)
+            userService.join(email, nickname, password)
         }
     }
 }

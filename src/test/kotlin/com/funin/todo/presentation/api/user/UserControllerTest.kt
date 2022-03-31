@@ -2,7 +2,7 @@ package com.funin.todo.presentation.api.user
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.funin.todo.ActiveTestProfile
-import org.junit.jupiter.api.Assertions.assertThrows
+import com.funin.todo.domain.ResultCode
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -34,9 +34,10 @@ class UserControllerTest {
     @Test
     fun 회원가입_성공() {
         // given
+        val email = "funin@google.com"
         val nickname = "funin-todo"
         val password = UUID.randomUUID().toString()
-        val request = SignUpRequest(nickname, password)
+        val request = SignUpRequest(email, nickname, password)
 
         mockMvc
             .perform(
@@ -53,24 +54,59 @@ class UserControllerTest {
 
     @Test
     fun 회원가입_빈_닉네임_실패() {
+        val email = "funin@google.com"
         val nickname = ""
         val password = UUID.randomUUID().toString()
-        val request = SignUpRequest(nickname, password)
+        val request = SignUpRequest(email, nickname, password)
 
-        assertThrows(IllegalArgumentException::class.java) {
-            userController.signup(request)
-        }
+        mockMvc
+            .perform(
+                post("/api/v1/signup")
+                    .content(objectMapper.writeValueAsString(request))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+            )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("\$.code").value(ResultCode.BAD_REQUEST.name))
+            .andExpect(jsonPath("\$.message").value(ResultCode.BAD_REQUEST.message))
     }
 
     @Test
-    fun 회원가입_빈_패스워드_실패() {
+    fun 회원가입_이메일_형식_실패() {
+        val email = "funin"
         val nickname = "funin-todo"
-        val password = ""
-        val request = SignUpRequest(nickname, password)
+        val password = UUID.randomUUID().toString()
+        val request = SignUpRequest(email, nickname, password)
 
-        assertThrows(IllegalArgumentException::class.java) {
-            userController.signup(request)
-        }
+        mockMvc
+            .perform(
+                post("/api/v1/signup")
+                    .content(objectMapper.writeValueAsString(request))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+            )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("\$.code").value(ResultCode.BAD_REQUEST.name))
+            .andExpect(jsonPath("\$.message").value(ResultCode.BAD_REQUEST.message))
+    }
+
+    @Test
+    fun 회원가입_빈_이메일_닉네임_패스워드_실패() {
+        val request = SignUpRequest("", "", "")
+
+        mockMvc
+            .perform(
+                post("/api/v1/signup")
+                    .content(objectMapper.writeValueAsString(request))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+            )
+            .andDo(print())
+            .andExpect(status().is4xxClientError)
+            .andExpect(jsonPath("\$.code").value(ResultCode.BAD_REQUEST.name))
+            .andExpect(jsonPath("\$.message").value(ResultCode.BAD_REQUEST.message))
     }
 
     @Test

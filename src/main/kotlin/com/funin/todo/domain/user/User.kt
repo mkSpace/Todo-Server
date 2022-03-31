@@ -13,6 +13,9 @@ class User : BaseTimeEntity() {
     @Column(nullable = false, unique = true)
     var nickname: String? = null
 
+    @Column(nullable = false, unique = true)
+    var email: String? = null
+
     @Column(nullable = false)
     var password: String? = null
 
