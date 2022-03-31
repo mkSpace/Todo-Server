@@ -43,6 +43,7 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
         http.antMatcher("/**")
             .authorizeRequests()
             .antMatchers("/api/v1/signup").permitAll()
+            .antMatchers("/api/v1/login").permitAll()
             .antMatchers("/api/**").hasAuthority(Role.MEMBER)
         http.csrf().disable()
         http.logout().disable()
