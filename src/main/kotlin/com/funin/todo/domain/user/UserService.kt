@@ -3,6 +3,7 @@ package com.funin.todo.domain.user
 import com.funin.todo.domain.exception.UserDuplicatedException
 import com.funin.todo.domain.exception.UserNotFoundException
 import com.funin.todo.presentation.utils.CipherManager
+import org.slf4j.LoggerFactory
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -19,6 +20,10 @@ class UserServiceImpl(
     private val userRepository: UserRepository,
     private val cipherManager: CipherManager
 ) : UserService {
+
+    companion object {
+        private val log = LoggerFactory.getLogger(this::class.java)
+    }
 
     @Transactional
     override fun join(email: String, nickname: String, password: String): UserVO? {
@@ -40,11 +45,11 @@ class UserServiceImpl(
         val findMember = userRepository.findByEmail(email) ?: throw UserNotFoundException("이메일에 해당하는 유저가 없습니다.")
         val salt = findMember.salt
         val decoded = cipherManager.encodeSHA256(password, salt)
-        return if (decoded == findMember.password) {
-            findMember.toUserVO()
-        } else {
-            null
+        if (decoded != findMember.password) {
+            log.error("비밀번호가 일치하지 않음. decoded: $decoded, salt: $salt")
+            throw UserNotFoundException("비밀번호가 일치하지 않습니다.")
         }
+        return findMember.toUserVO()
     }
 
     override fun findById(userId: Long): User? {

@@ -2,10 +2,12 @@ package com.funin.todo.domain.user
 
 import com.funin.todo.ActiveTestProfile
 import com.funin.todo.domain.exception.UserDuplicatedException
+import com.funin.todo.domain.exception.UserNotFoundException
 import com.funin.todo.presentation.utils.CipherManager
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
@@ -127,9 +129,9 @@ internal class UserServiceTest {
         }.`when`(userRepository).findByEmail(email)
 
         //when
-        val userVO = userService.login(email, UUID.randomUUID().toString())
+        val userVO =
 
         //then
-        assertThat(userVO).isNull()
+        assertThrows<UserNotFoundException> { userService.login(email, UUID.randomUUID().toString()) }
     }
 }
