@@ -1,6 +1,7 @@
 package com.funin.todo.presentation.api.user
 
 import com.funin.todo.application.TokenService
+import com.funin.todo.domain.exception.UserNotFoundException
 import com.funin.todo.domain.user.UserService
 import com.funin.todo.presentation.api.ApiResponse
 import com.funin.todo.presentation.api.ApiV1
@@ -20,6 +21,15 @@ class UserController(
             ?: throw IllegalStateException("cannot create user")
         return ApiResponse.success(
             data = SignUpResponse(jwtService.encode(userVO.id), userVO.nickname)
+        )
+    }
+
+    @PostMapping("/login")
+    fun login(@RequestBody @Validated request: SignInRequest): ApiResponse<SignInResponse> {
+        val userVO = userService.login(request.email, request.password)
+            ?: throw UserNotFoundException("${request.email}에 해당하는 사용자를 찾을 수 없습니다.")
+        return ApiResponse.success(
+            data = SignInResponse(jwtService.encode(userVO.id), userVO.nickname)
         )
     }
 }

@@ -79,4 +79,57 @@ internal class UserServiceTest {
             userService.join(email, nickname, password)
         }
     }
+
+    @Test
+    fun 로그인_성공() {
+        //given
+        val email = "funin@google.com"
+        val nickname = "funin-todo"
+        val password = UUID.randomUUID().toString()
+        val salt = cipherManager.generateSalt()
+        val encodedPassword = cipherManager.encodeSHA256(password, salt)
+        doAnswer {
+            User().apply {
+                this.id = 1L
+                this.email = email
+                this.nickname = nickname
+                this.password = encodedPassword
+                this.salt = salt
+                this.createdAt = LocalDateTime.now()
+            }
+        }.`when`(userRepository).findByEmail(email)
+
+        //when
+        val userVO = userService.login(email, password)
+
+        //then
+        assertThat(userVO).isNotNull
+        assertThat(userVO?.nickname).isEqualTo(nickname)
+    }
+
+    @Test
+    fun 로그인_비밀번호_불일치_실패() {
+        //given
+        val email = "funin@google.com"
+        val nickname = "funin-todo"
+        val password = UUID.randomUUID().toString()
+        val salt = cipherManager.generateSalt()
+        val encodedPassword = cipherManager.encodeSHA256(password, salt)
+        doAnswer {
+            User().apply {
+                this.id = 1L
+                this.email = email
+                this.nickname = nickname
+                this.password = encodedPassword
+                this.salt = salt
+                this.createdAt = LocalDateTime.now()
+            }
+        }.`when`(userRepository).findByEmail(email)
+
+        //when
+        val userVO = userService.login(email, UUID.randomUUID().toString())
+
+        //then
+        assertThat(userVO).isNull()
+    }
 }

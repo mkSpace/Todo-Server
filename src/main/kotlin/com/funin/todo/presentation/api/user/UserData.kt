@@ -10,3 +10,7 @@ data class SignUpRequest(
 )
 
 data class SignUpResponse(val accessToken: String, val nickname: String)
+
+data class SignInRequest(@field:Email @field:NotBlank val email: String, @field:NotBlank val password: String)
+
+data class SignInResponse(val accessToken: String, val nickname: String)
