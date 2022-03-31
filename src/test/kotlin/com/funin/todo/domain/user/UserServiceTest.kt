@@ -128,9 +128,6 @@ internal class UserServiceTest {
             }
         }.`when`(userRepository).findByEmail(email)
 
-        //when
-        val userVO =
-
         //then
         assertThrows<UserNotFoundException> { userService.login(email, UUID.randomUUID().toString()) }
     }
