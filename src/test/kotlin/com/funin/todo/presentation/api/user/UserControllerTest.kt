@@ -175,6 +175,6 @@ class UserControllerTest {
             .andDo(print())
             .andExpect(status().is5xxServerError)
             .andExpect(jsonPath("\$.code").value(ResultCode.USER_NOT_FOUND.name))
-            .andExpect(jsonPath("\$.message").value(ResultCode.USER_NOT_FOUND.message))
+            .andExpect(jsonPath("\$.message").value("${email}에 해당하는 사용자를 찾을 수 없습니다."))
     }
 }
