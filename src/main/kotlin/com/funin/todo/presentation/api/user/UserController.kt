@@ -16,19 +16,19 @@ class UserController(
 ) {
 
     @PostMapping("/signup")
-    fun signup(@RequestBody @Validated request: SignUpRequest): ApiResponse<SignUpResponse> {
+    fun signup(@RequestBody @Validated request: SignUpRequest): ApiResponse<SimpleUserResponse> {
         val userVO = userService.join(request.email, request.nickname, request.password)
             ?: throw IllegalStateException("cannot create user")
         return ApiResponse.success(
-            data = SignUpResponse(jwtService.encode(userVO.id), userVO.nickname)
+            data = SimpleUserResponse(userVO.id, jwtService.encode(userVO.id), userVO.nickname)
         )
     }
 
     @PostMapping("/login")
-    fun login(@RequestBody @Validated request: SignInRequest): ApiResponse<SignInResponse> {
+    fun login(@RequestBody @Validated request: SignInRequest): ApiResponse<SimpleUserResponse> {
         val userVO = userService.login(request.email, request.password) ?: throw UserNotFoundException()
         return ApiResponse.success(
-            data = SignInResponse(jwtService.encode(userVO.id), userVO.nickname)
+            data = SimpleUserResponse(userVO.id, jwtService.encode(userVO.id), userVO.nickname)
         )
     }
 }

@@ -48,6 +48,7 @@ class UserControllerTest {
             )
             .andDo(print())
             .andExpect(status().isOk)
+            .andExpect(jsonPath("\$.data.id").exists())
             .andExpect(jsonPath("\$.data.accessToken").exists())
             .andExpect(jsonPath("\$.data.nickname").value(nickname))
     }
@@ -128,6 +129,7 @@ class UserControllerTest {
             )
             .andDo(print())
             .andExpect(status().isOk)
+            .andExpect(jsonPath("\$.data.id").exists())
             .andExpect(jsonPath("\$.data.accessToken").exists())
             .andExpect(jsonPath("\$.data.nickname").value(nickname))
     }
