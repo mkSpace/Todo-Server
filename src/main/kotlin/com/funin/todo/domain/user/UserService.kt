@@ -1,6 +1,7 @@
 package com.funin.todo.domain.user
 
-import com.funin.todo.domain.exception.UserDuplicatedException
+import com.funin.todo.domain.exception.UserEmailDuplicatedException
+import com.funin.todo.domain.exception.UserNicknameDuplicatedException
 import com.funin.todo.domain.exception.UserNotFoundException
 import com.funin.todo.presentation.utils.CipherManager
 import org.slf4j.LoggerFactory
@@ -27,9 +28,13 @@ class UserServiceImpl(
 
     @Transactional
     override fun join(email: String, nickname: String, password: String): UserVO? {
-        val findMember = userRepository.findByEmail(email) ?: userRepository.findByNickname(nickname)
-        if (findMember != null) {
-            throw UserDuplicatedException(nickname)
+        val findMemberByEmail = userRepository.findByEmail(email)
+        val findMemberByNickname = userRepository.findByNickname(nickname)
+        if (findMemberByEmail != null) {
+            throw UserEmailDuplicatedException(email)
+        }
+        if (findMemberByNickname != null) {
+            throw UserNicknameDuplicatedException(nickname)
         }
         val salt = cipherManager.generateSalt()
         val user = User().apply {

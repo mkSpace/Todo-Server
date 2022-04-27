@@ -1,7 +1,7 @@
 package com.funin.todo.domain.user
 
 import com.funin.todo.ActiveTestProfile
-import com.funin.todo.domain.exception.UserDuplicatedException
+import com.funin.todo.domain.exception.UserNicknameDuplicatedException
 import com.funin.todo.domain.exception.UserNotFoundException
 import com.funin.todo.presentation.utils.CipherManager
 import org.assertj.core.api.Assertions.assertThat
@@ -77,7 +77,7 @@ internal class UserServiceTest {
         }.`when`(userRepository).findByNickname(nickname)
 
         //then
-        Assertions.assertThrows(UserDuplicatedException::class.java) {
+        Assertions.assertThrows(UserNicknameDuplicatedException::class.java) {
             userService.join(email, nickname, password)
         }
     }

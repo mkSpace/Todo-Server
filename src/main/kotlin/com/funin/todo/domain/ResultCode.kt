@@ -11,5 +11,6 @@ enum class ResultCode(val message: String) {
 
     // User
     USER_NICKNAME_ALREADY_EXIST("중복된 유저 이름입니다"),
-    USER_NOT_FOUND("유저를 찾을 수 없습니다."),
+    USER_EMAIL_ALREADY_EXIST("중복된 유저 이메일입니다"),
+    USER_NOT_FOUND("유저를 찾을 수 없습니다"),
 }
