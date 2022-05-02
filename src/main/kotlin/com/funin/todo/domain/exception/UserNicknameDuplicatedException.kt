@@ -2,7 +2,7 @@ package com.funin.todo.domain.exception
 
 import com.funin.todo.domain.ResultCode
 
-class UserDuplicatedException(
+class UserNicknameDuplicatedException(
     override val message: String?,
     override val cause: Throwable?
 ) : BusinessException(
