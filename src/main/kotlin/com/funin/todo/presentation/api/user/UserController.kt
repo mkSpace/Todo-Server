@@ -20,7 +20,11 @@ class UserController(
         val userVO = userService.join(request.email, request.nickname, request.password)
             ?: throw IllegalStateException("cannot create user")
         return ApiResponse.success(
-            data = SimpleUserResponse(userVO.id, jwtService.encode(userVO.id), userVO.nickname)
+            data = SimpleUserResponse(
+                id = userVO.id,
+                accessToken = jwtService.encode(userVO.id),
+                nickname = userVO.nickname
+            )
         )
     }
 
@@ -28,7 +32,11 @@ class UserController(
     fun login(@RequestBody @Validated request: SignInRequest): ApiResponse<SimpleUserResponse> {
         val userVO = userService.login(request.email, request.password) ?: throw UserNotFoundException()
         return ApiResponse.success(
-            data = SimpleUserResponse(userVO.id, jwtService.encode(userVO.id), userVO.nickname)
+            data = SimpleUserResponse(
+                id = userVO.id,
+                accessToken = jwtService.encode(userVO.id),
+                nickname = userVO.nickname
+            )
         )
     }
 }
