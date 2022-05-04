@@ -16,5 +16,13 @@ class Todo : BaseTimeEntity() {
     var content: String? = null
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id") var author: User? = null
+    @JoinColumn(name = "author_id")
+    var author: User? = null
+
+    @Enumerated(value = EnumType.STRING)
+    var state: State = State.NONE
+
+    var reason: String? = null
+
+    var canUpdate: Boolean = true
 }
