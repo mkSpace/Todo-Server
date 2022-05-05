@@ -19,7 +19,7 @@ import java.util.*
 
 @ExtendWith(MockitoExtension::class)
 @ActiveTestProfile
-internal class UserServiceTest {
+class UserServiceTest {
     @Spy
     lateinit var cipherManager: CipherManager
 
