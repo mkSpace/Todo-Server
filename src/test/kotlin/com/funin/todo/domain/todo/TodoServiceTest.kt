@@ -1,6 +1,8 @@
 package com.funin.todo.domain.todo
 
 import com.funin.todo.ActiveTestProfile
+import com.funin.todo.domain.exception.TodoAccessDeniedException
+import com.funin.todo.domain.exception.TodoNotFoundException
 import com.funin.todo.domain.exception.UserNotFoundException
 import com.funin.todo.domain.user.User
 import com.funin.todo.domain.user.UserRepository
@@ -69,7 +71,6 @@ class TodoServiceTest {
     @Test
     fun create_유저를_찾을수없음() {
         // given
-        val todoId = generateSimpleAbsoluteLong()
         val content = generateSimpleString()
         val authorId = generateSimpleAbsoluteLong()
         val state = State.NONE
@@ -81,6 +82,79 @@ class TodoServiceTest {
         // then
         assertThrows<UserNotFoundException> {
             todoService.create(authorId, content, reason, state, canUpdate)
+        }
+    }
+
+    @Test
+    fun update_성공() {
+        // given
+        val todoId = generateSimpleAbsoluteLong()
+        val content = generateSimpleString()
+        val authorId = generateSimpleAbsoluteLong()
+        val simpleUser = User().apply { id = authorId }
+        val state = State.NONE
+        val reason = generateSimpleString()
+        val canUpdate = true
+        val simpleTodo = Todo().apply {
+            this.id = todoId
+            this.content = content
+            this.author = simpleUser
+            this.state = state
+            this.reason = reason
+            this.canUpdate = canUpdate
+            this.createdAt = LocalDateTime.now()
+        }
+
+        `when`(todoRepository.findById(todoId)).thenReturn(Optional.of(simpleTodo))
+
+        // when
+        todoService.update(todoId, authorId, content, reason, state, canUpdate)
+    }
+
+    @Test
+    fun update_Todo를_찾을수없음() {
+        // given
+        val todoId = generateSimpleAbsoluteLong()
+        val content = generateSimpleString()
+        val authorId = generateSimpleAbsoluteLong()
+        val state = State.NONE
+        val reason = generateSimpleString()
+        val canUpdate = true
+
+        `when`(todoRepository.findById(todoId)).thenReturn(Optional.empty())
+
+        // then
+        assertThrows<TodoNotFoundException> {
+            todoService.update(todoId, authorId, content, reason, state, canUpdate)
+        }
+    }
+
+    @Test
+    fun update_Todo에_접근할수없음() {
+        // given
+        val todoId = generateSimpleAbsoluteLong()
+        val content = generateSimpleString()
+        val authorId = generateSimpleAbsoluteLong()
+        val differentAuthorId = generateSimpleAbsoluteLong()
+        val simpleUser = User().apply { id = authorId }
+        val state = State.NONE
+        val reason = generateSimpleString()
+        val canUpdate = true
+        val simpleTodo = Todo().apply {
+            this.id = todoId
+            this.content = content
+            this.author = simpleUser
+            this.state = state
+            this.reason = reason
+            this.canUpdate = canUpdate
+            this.createdAt = LocalDateTime.now()
+        }
+
+        `when`(todoRepository.findById(todoId)).thenReturn(Optional.of(simpleTodo))
+
+        // then
+        assertThrows<TodoAccessDeniedException> {
+            todoService.update(todoId, differentAuthorId, content, reason, state, canUpdate)
         }
     }
 }
