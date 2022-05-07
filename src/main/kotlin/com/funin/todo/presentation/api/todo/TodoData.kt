@@ -8,3 +8,12 @@ data class TodoRequest(
     val reason: String? = null,
     val canUpdate: Boolean = true
 )
+
+data class TodoResponse(
+    val todoId: Long,
+    val authorId: Long,
+    val content: String,
+    val state: State,
+    val reason: String? = null,
+    val canUpdate: Boolean
+)
