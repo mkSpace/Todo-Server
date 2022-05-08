@@ -1,6 +1,7 @@
 package com.funin.todo.presentation.api.todo
 
 import com.funin.todo.domain.todo.State
+import java.time.LocalDateTime
 
 data class TodoRequest(
     val content: String = "",
@@ -15,5 +16,6 @@ data class TodoResponse(
     val content: String,
     val state: State,
     val reason: String? = null,
-    val canUpdate: Boolean
+    val canUpdate: Boolean,
+    val createdAt: LocalDateTime
 )

@@ -4,7 +4,6 @@ import com.funin.todo.domain.exception.TodoAccessDeniedException
 import com.funin.todo.domain.exception.TodoNotFoundException
 import com.funin.todo.domain.exception.UserNotFoundException
 import com.funin.todo.domain.user.UserRepository
-import org.slf4j.LoggerFactory
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -25,7 +24,7 @@ interface TodoService {
         reason: String? = null,
         state: State = State.NONE,
         canUpdate: Boolean = true
-    )
+    ): TodoVO?
 }
 
 @Service
@@ -34,10 +33,6 @@ class TodoServiceImpl(
     private val todoRepository: TodoRepository,
     private val userRepository: UserRepository
 ) : TodoService {
-
-    companion object {
-        private val log = LoggerFactory.getLogger(this::class.java)
-    }
 
     @Transactional
     override fun create(userId: Long, content: String, reason: String?, state: State, canUpdate: Boolean): TodoVO? {
@@ -60,7 +55,7 @@ class TodoServiceImpl(
         reason: String?,
         state: State,
         canUpdate: Boolean
-    ) {
+    ): TodoVO? {
         val findTodo = todoRepository.findByIdOrNull(todoId) ?: throw TodoNotFoundException(todoId)
         if (findTodo.author?.id != userId) throw TodoAccessDeniedException()
         findTodo.apply {
@@ -69,5 +64,6 @@ class TodoServiceImpl(
             this.state = state
             this.canUpdate = canUpdate
         }
+        return findTodo.toTodoVO()
     }
 }
