@@ -44,7 +44,7 @@ class PreAuthTokenProvider : AuthenticationProvider {
         throw TokenMissingException("Invalid token")
     }
 
-    override fun supports(authentication: Class<*>?): Boolean {
+    override fun supports(authentication: Class<*>): Boolean {
         return PreAuthenticatedAuthenticationToken::class.java.isAssignableFrom(authentication)
     }
 }
